@@ -15,28 +15,28 @@ public class ObjectDomainTest {
 
         @BeforeEach
         void init() {
-            human = new Human(Name.ARTHUR, Feeling.LOST);
+            human = new Human(Name.ARTHUR, Feeling.LOST, Item.NONE, Action.NONE);
         }
 
         @Test
         @DisplayName("Check holding an item")
         void checkHoldingItem() {
             human.hold(Item.GLASS_BOTTLE);
-            assertEquals(Feeling.LOST, human.getFeeling());
+            assertEquals(Item.GLASS_BOTTLE, human.getItem());
         }
 
         @Test
         @DisplayName("Check looking at another human")
         void checkLookingAt() {
             human.lookAt(Name.FORD);
-            assertEquals(Feeling.LOST, human.getFeeling());
+            assertEquals(Action.LOOK, human.getAction());
         }
 
         @Test
         @DisplayName("Check blinking")
         void checkBlinking() {
             human.blink();
-            assertEquals(Feeling.LOST, human.getFeeling());
+            assertEquals(Action.BLINK, human.getAction());
         }
 
         @Test
@@ -53,38 +53,40 @@ public class ObjectDomainTest {
 
         @BeforeEach
         void init() {
-            fish = new Fish(Color.YELLOW, Size.SMALL);
+            fish = new Fish(Color.RED, Size.SMALL, Item.NONE);
         }
 
         @Test
         @DisplayName("Check shimmering")
         void checkShimmering() {
-            fish.shimmer();
+            fish.shimmer(Color.YELLOW);
             assertEquals(Color.YELLOW, fish.getColor());
         }
 
         @Test
         @DisplayName("Check swimming")
         void checkSwimming() {
-            fish.swim();
-            assertEquals(Size.SMALL, fish.getSize());
+            fish.swim(Item.GLASS_BOTTLE);
+            assertEquals(Item.GLASS_BOTTLE, fish.getItem());
         }
     }
 
     @Nested
     class BottleTest {
         private Bottle bottle;
+        private Fish fish;
 
         @BeforeEach
         void init() {
-            bottle = new Bottle(new Fish(Color.YELLOW, Size.SMALL));
+            bottle = new Bottle();
+            fish = new Fish(Color.RED, Size.SMALL, Item.NONE);
         }
 
         @Test
         @DisplayName("Check shaking the bottle")
         void checkShaking() {
-            bottle.shake();
-            assertNotNull(bottle.getFish());
+            bottle.shake(fish);
+            assertEquals(fish, bottle.getFish());
         }
     }
 }
